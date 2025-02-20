@@ -11,11 +11,12 @@ class Calendar {
             keyFile: this.serviceAccount,
             scopes: this.scopes,
         });
+
+        this.events = [];
     }
 
     async getEvents() {
-        try {
-            
+        try { 
             const authClient = await this.auth.getClient();
             
             const calendar = google.calendar({ version: 'v3', auth: authClient });
@@ -27,6 +28,7 @@ class Calendar {
             });
 
             return response.data.items;
+            
         } catch (error) {
             console.error('Error in getEvents:', error);
             throw error;

@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dayjs": "^1.11.13",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
     "googleapis": "^144.0.0"

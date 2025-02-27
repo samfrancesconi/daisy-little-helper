@@ -1,23 +1,35 @@
-const Calendar = require('./services/Calendar.js');
+const CalendarRepository = require('./repositories/GcalendarRepository.js');
 const DiscordBot = require('./services/DiscordBot.js');
-const dayjs = require('dayjs');
+const EventsFilter = require('./utils/EventsFilter.js');
+const Message = require('./models/Message.js');
+require('dotenv').config();
 
 
-const calendar = new Calendar('./service-account.json');
 const bot = new DiscordBot();
+const calendar = new CalendarRepository('./service-account.json');
+const filter = new EventsFilter();
+const message = new Message();
+
 
 bot.client.on("messageCreate", async (message) => {
     if(message.content == '!daisy') {
         console.log(calendar.getEvents());
 
-        const events = await calendar.getEvents();
+        let events = await calendar.getEvents();
+
+        if(!events)
+            return message.author.send('Ops.... qualcosa è andato storto'); 
+
+        //filters only the incoming events events
+        events = filter.getIncomingEvents(events);
        
-        if(events) {
+        if(events.length) {
             //using this for my dog's appointments
-            return events.map(event => message.author.send(dayjs(event.start.dateTime).format('DD-MM-YYYY HH:mm:ss') + ' abbiamo appuntamento per ' + event.summary));
+            return events.map(event => 
+                message.author.send(message.createDaisyMessage(event)));
         };
 
-        return message.author.send('Ops.... qualcosa è andato storto'); 
+        return message.author.send('Non ci sono eventi programmati in futuro'); 
     }; 
 });
 

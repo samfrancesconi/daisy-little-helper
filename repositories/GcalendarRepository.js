@@ -2,7 +2,7 @@ const { google } = require('googleapis');
 const { GoogleAuth } = require('google-auth-library');
 require('dotenv').config();
 
-class Calendar {
+class CalendarRepository {
     constructor(serviceAccountPath) {
         this.serviceAccount = serviceAccountPath;
         this.scopes = ['https://www.googleapis.com/auth/calendar'];
@@ -36,4 +36,4 @@ class Calendar {
     }
 }
 
-module.exports = Calendar;
+module.exports = CalendarRepository;

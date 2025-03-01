@@ -5,7 +5,8 @@ dayjs.extend(isSameOrBefore);
 class EventsFilter {
     getIncomingEvents(allEvents) {
         return allEvents.filter(event => {
-            if(dayjs().isSameOrBefore(event.start.dateTime, 'day') && dayjs().isSame(event.start.dateTime, 'month'))
+            let date = event.start.date ? event.start.date : event.start.dateTime;
+            if(date && dayjs().isSameOrBefore(date, 'day') && dayjs().isSame(date, 'month'))
                 return event;
         }); 
     };

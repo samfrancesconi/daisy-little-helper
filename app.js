@@ -8,7 +8,7 @@ require('dotenv').config();
 const bot = new DiscordBot();
 const calendar = new CalendarRepository('./service-account.json');
 const filter = new EventsFilter();
-const message = new Message();
+const messageService = new Message();
 
 
 bot.client.on("messageCreate", async (message) => {
@@ -26,7 +26,7 @@ bot.client.on("messageCreate", async (message) => {
         if(events.length) {
             //using this for my dog's appointments
             return events.map(event => 
-                message.author.send(message.createDaisyMessage(event)));
+                message.author.send(messageService.createDaisyMessage(event)));
         };
 
         return message.author.send('Non ci sono eventi programmati in futuro'); 
